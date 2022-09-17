@@ -6,6 +6,14 @@ def strip_in_data(data):  # 把列名中和数据中首尾的空格都去掉。
     data = data.applymap(lambda x: x.strip().strip('¥') if isinstance(x, str) else x)
     return data
 
+
+ccb1 = pd.read_csv('储蓄卡账单.txt',header=3, skipfooter=0, encoding='utf-8')
+ccb1 = ccb1.iloc[:, [0, 4, 7, 1, 2, 3, 5]]  # 按顺序提取所需列
+ccb1 = strip_in_data(ccb1)  # 去除列名与数值中的空格。
+
+'''
+print(ccb1)
+
 def read_data_ccb1(path):  # 获取建设银行储蓄卡数据
     d_ccb1 = pd.read_csv(path, header=16, skipfooter=0, encoding='utf-8')  # 数据获取，微信
     d_ccb1 = d_ccb1.iloc[:, [0, 4, 7, 1, 2, 3, 5]]  # 按顺序提取所需列
