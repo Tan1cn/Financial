@@ -131,6 +131,8 @@ if __name__ == '__main__':
     data_merge = add_cols(data_merge)  # 新增 逻辑、月份、乘后金额 3列
     print("已自动计算乘后金额和交易月份，已合并数据")
     merge_list = data_merge.values.tolist()  # 格式转换，DataFrame->List
+    
+    
     workbook = openpyxl.load_workbook(path_account)  # openpyxl读取账本文件
     sheet = workbook['明细']
     maxrow = sheet.max_row  # 获取最大行
