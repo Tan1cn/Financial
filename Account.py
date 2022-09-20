@@ -19,14 +19,14 @@ def read_data_ccb1(path):  # 获取建设银行储蓄卡数据
     ccb1.iloc[:, 3] = ccb1.iloc[:, 3].astype('float64')  # 数据类型更改
     ccb1.rename(columns={'交易地点': '交易详情'}, inplace=True)  # 修改列名称
     ccb1.insert(7, '数据来源', "建设银行储蓄卡", allow_duplicates=True)  # 添加建设银行储蓄卡来源标识
-    ccb1.fullna(0)
+    ccb1 = ccb1.fillna(0)
     #for i in ccb1.index:       #将收入中的空值转换为0
     #    if bool(pd.isnull(ccb1.iloc[i,3])):
     #        ccb1.iloc[i,3]= 0
 
     len1 = len(ccb1)
     print("成功读取 " + str(len1) + " 条「建设银行储蓄卡」账单数据\n")
-    print(ccb1)
+    #print(ccb1)
     #print(ccb1.dtypes)
     return(ccb1)
 
@@ -58,7 +58,7 @@ def read_data_ccb2(path):  # 获取建设银行信用卡数据
     return(ccb2)
 
 
-path1 = '/Users/tanyi/Desktop/Python/Financial/Data/储蓄卡账单.txt'
+path1 = 'Data/储蓄卡账单.txt'
 path2 = 'Data/信用卡账单.csv'
 path_account = '个人财务管理.xlsx'
 
