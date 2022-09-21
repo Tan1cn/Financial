@@ -8,6 +8,7 @@ def strip_in_data(data):  # 把列名中和数据中首尾的空格都去掉。
     data = data.applymap(lambda x: x.strip().strip('¥') if isinstance(x, str) else x)
     return data
 
+
 def read_data_ccb1(path):  # 获取建设银行储蓄卡数据
     ccb1 = pd.read_csv(path,header=3, skipfooter=0, encoding='utf-8')
     ccb1 = ccb1.iloc[:, [1, 2, 3, 4, 7, 9, 10]]  # 按顺序提取所需列
@@ -57,15 +58,13 @@ def read_data_ccb2(path):  # 获取建设银行信用卡数据
     print("成功读取 " + str(len2) + " 条「建设银行信用卡」账单数据\n") 
     return(ccb2)
 
-
-path1 = 'Data/储蓄卡账单.txt'
-path2 = 'Data/信用卡账单.csv'
+path1 = 'Data\储蓄卡账单.txt'
+path2 = 'Data\信用卡账单.csv'
 path_account = '个人财务管理.xlsx'
 
 data_ccb1 = read_data_ccb1(path1)
-#data_ccb2 = read_data_ccb2(path2)
+data_ccb2 = read_data_ccb2(path2)
 
-'''
 data_merge = pd.concat([data_ccb1,data_ccb2])
 print(data_merge.dtypes)
 merge_list = data_merge.values.tolist()
@@ -79,4 +78,3 @@ for row in merge_list:
 
 workbook.save(path_account)  # 保存
 print("\n成功将数据写入到 " + path_account)
-'''
