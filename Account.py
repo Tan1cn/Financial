@@ -1,7 +1,15 @@
 import pandas as pd
 import openpyxl
 import datetime
+import os
 
+path1 = r'C:\Users\tanyi\Downloads\储蓄卡账单.txt'
+path2 = r'C:\Users\tanyi\Downloads\信用卡账单.csv'
+#path_account = r'D:\Python\Financial\个人财务管理.xlsx'
+path_account = r'D:\@生活\台帐\个人财务管理.xlsx'
+path_merge = r'本次写入数据.csv'
+
+#---------------------------------------------------------------------------------------------------
 
 def strip_in_data(data):  # 把列名中和数据中首尾的空格都去掉。
     data = data.rename(columns={column_name: column_name.strip() for column_name in data.columns})
@@ -58,16 +66,18 @@ def read_data_ccb2(path):  # 获取建设银行信用卡数据
     print("成功读取 " + str(len2) + " 条「建设银行信用卡」账单数据\n") 
     return(ccb2)
 
-path1 = 'Data\储蓄卡账单.txt'
-path2 = 'Data\信用卡账单.csv'
-path_account = '个人财务管理.xlsx'
+
 
 data_ccb1 = read_data_ccb1(path1)
 data_ccb2 = read_data_ccb2(path2)
 
 data_merge = pd.concat([data_ccb1,data_ccb2])
-print(data_merge.dtypes)
+print(data_merge)
 merge_list = data_merge.values.tolist()
+
+data_merge.to_csv(path_merge)
+
+
 
 workbook = openpyxl.load_workbook(path_account)  # openpyxl读取账本文件
 sheet = workbook['财务记录']
