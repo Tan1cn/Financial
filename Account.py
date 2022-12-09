@@ -5,7 +5,7 @@ import os
 
 path1 = r'C:\Users\tanyi\Downloads\储蓄卡账单.txt'
 path2 = r'C:\Users\tanyi\Downloads\信用卡账单.csv'
-#path_account = r'D:\Python\Financial\个人财务管理.xlsx'
+
 path_account = r'D:\@生活\台帐\个人财务管理.xlsx'
 path_merge = r'本次写入数据.csv'
 
@@ -40,7 +40,7 @@ def read_data_ccb1(path):  # 获取建设银行储蓄卡数据
     return(ccb1)
 
 def read_data_ccb2(path):  # 获取建设银行信用卡数据
-    ccb2 = pd.read_csv(path,header=3, skipfooter=0, encoding='GB2312')
+    ccb2 = pd.read_csv(path,header=3, skipfooter=0, encoding='GB2312',encoding_errors='ignore')
     ccb2 = ccb2.iloc[:, [0, 5, 3, 6]]  # 按顺序提取所需列
     ccb2 = strip_in_data(ccb2)  # 去除列名与数值中的空格。
     ccb2.rename(columns={'交易日': '交易日期', '入账金额': '支出', '类型': '摘要','交易描述': '交易详情'}, inplace=True)  # 修改列名称
