@@ -96,6 +96,7 @@ if __name__ == '__main__':
     path_cxk1 = tkinter.filedialog.askopenfilename(title='选择要导入的储蓄卡账单：', filetypes=[('所有文件', '.*'), ('csv文件', '.csv')])
     print('提示：请在弹窗中选择要导入的【信用卡账单】账单文件\n')
     path_xyk1 = tkinter.filedialog.askopenfilename(title='选择要导入的信用卡账单：', filetypes=[('所有文件', '.*'), ('csv文件', '.csv')])
+    print(path_xyk1)
     print('提示：请在弹窗中选择要导入的【微信账单】账单文件\n')
     path_wx1 = tkinter.filedialog.askopenfilename(title='选择要导入的微信账单：', filetypes=[('所有文件', '.*'), ('csv文件', '.csv')])
     # print('提示：请在弹窗中选择要导入的【支付宝账单】账单文件\n')
@@ -115,6 +116,7 @@ if __name__ == '__main__':
         data_wx1 = read_data_wx1(path_wx1)
     # elif os.path.exists(path_zfb1):
     #     data_zfb1 = read_data_zfb1(path_zfb1)        
+    print(data_ccb2)
     
     data_merge = pd.concat([data_ccb1,data_ccb2,data_wx1,path_zfb1])
     merge_list = data_merge.values.tolist()
