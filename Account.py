@@ -1,8 +1,5 @@
 #建设银行储蓄卡选txt文件
 
-
-
-
 import pandas as pd
 import openpyxl
 import datetime
