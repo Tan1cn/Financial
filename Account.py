@@ -5,6 +5,11 @@ import openpyxl
 import datetime
 import os
 import tkinter.filedialog
+import datetime
+
+#---------------------------------------------------------------------------------------------------
+
+now = datetime.datetime.now()
 
 #---------------------------------------------------------------------------------------------------
 
@@ -25,6 +30,8 @@ def read_data_ccb1(path):  # 获取建设银行储蓄卡数据,并调整数据�
     ccb1.rename(columns={'交易地点': '交易详情'}, inplace=True)  # 修改列名称
     ccb1.insert(7, '数据来源', "建设银行储蓄卡", allow_duplicates=True)  # 添加建设银行储蓄卡来源标识
     ccb1 = ccb1.fillna(0)
+    ccb1.insert(4, '发票额', "")  
+    ccb1.insert(9, '导入时间', now, allow_duplicates=True)  
     len1 = len(ccb1)
     print("成功读取 " + str(len1) + " 条「建设银行储蓄卡」账单数据\n")
     #print(ccb1)
@@ -32,13 +39,15 @@ def read_data_ccb1(path):  # 获取建设银行储蓄卡数据,并调整数据�
     return(ccb1)
 
 def read_data_ccb2(path):  # 获取建设银行信用卡数据,并调整数据格式
-    ccb2 = pd.read_csv(path,header=3, skipfooter=0, encoding='GB2312',encoding_errors='ignore')
+    ccb2 = pd.read_csv(path,header=3, skipfooter=0, encoding='GB2312',encoding_errors='ignore') 
+    #数据文件中不能有"."，导致读取失败(Python Pandas Error tokenizing data)
+
     ccb2 = ccb2.iloc[:, [0, 5, 3, 6]]  # 按顺序提取所需列
     ccb2 = strip_in_data(ccb2)  # 去除列名与数值中的空格。
     ccb2.rename(columns={'交易日': '交易日期', '入账金额': '支出', '类型': '摘要','交易描述': '交易详情'}, inplace=True)  # 修改列名称
     ccb2.insert(1, '交易时间', "00:00:00")  
     ccb2.insert(3, '收入', "")  
-    ccb2.insert(5, '对方户名', "无")
+    ccb2.insert(5, '对方户名', "")
     ccb2.insert(7, '数据来源', "建设银行信用卡")# 添加建设银行信用卡来源标识
     ccb2.iloc[:, 0] = ccb2.iloc[:, 0].astype('str')  # 数据类型更改
     ccb2.iloc[:, 0] = ccb2.iloc[:, 0].astype('datetime64')  # 数据类型更改
@@ -51,6 +60,8 @@ def read_data_ccb2(path):  # 获取建设银行信用卡数据,并调整数据�
         else:
             ccb2.iloc[i,3]= 0 
     ccb2.iloc[:, 3] = ccb2.iloc[:, 3].astype('float64')  # 数据类型更改
+    ccb2.insert(4, '发票额', "") 
+    ccb2.insert(9, '导入时间', now, allow_duplicates=True)  
     #print(ccb2)
     #print(ccb2.dtypes)
     len2 = len(ccb2)
@@ -82,6 +93,8 @@ def read_data_wx1(path):  # 获取微信数据,并调整数据格式
         else:
             wx1.iloc[i,3]= 0 
     wx1.iloc[:, 3] = wx1.iloc[:, 3].astype('float64')  # 数据类型更改
+    wx1.insert(4, '发票额', "")
+    wx1.insert(9, '导入时间', now, allow_duplicates=True)  
     #print(wx1)
     #print(wx1.dtypes)
     len2 = len(wx1)
@@ -98,8 +111,8 @@ if __name__ == '__main__':
     path_cxk1 = tkinter.filedialog.askopenfilename(title='选择要导入的储蓄卡账单：', filetypes=[('所有文件', '.*'), ('csv文件', '.csv')])
     print('提示：请在弹窗中选择要导入的【信用卡账单】账单文件\n')
     path_xyk1 = tkinter.filedialog.askopenfilename(title='选择要导入的信用卡账单：', filetypes=[('所有文件', '.*'), ('csv文件', '.csv')])
-    print('提示：请在弹窗中选择要导入的【微信账单】账单文件\n')
-    path_wx1 = tkinter.filedialog.askopenfilename(title='选择要导入的微信账单：', filetypes=[('所有文件', '.*'), ('csv文件', '.csv')])
+    #print('提示：请在弹窗中选择要导入的【微信账单】账单文件\n')
+    #path_wx1 = tkinter.filedialog.askopenfilename(title='选择要导入的微信账单：', filetypes=[('所有文件', '.*'), ('csv文件', '.csv')])
     # print('提示：请在弹窗中选择要导入的【支付宝账单】账单文件\n')
     # path_zfb1 = tkinter.filedialog.askopenfilename(title='选择要导入的支付宝账单：', filetypes=[('所有文件', '.*'), ('csv文件', '.csv')])
 
@@ -113,8 +126,8 @@ if __name__ == '__main__':
         data_ccb1 = read_data_ccb1(path_cxk1)
     if os.path.exists(path_xyk1):
         data_ccb2 = read_data_ccb2(path_xyk1)
-    if os.path.exists(path_wx1):
-        data_wx1 = read_data_wx1(path_wx1)
+    # if os.path.exists(path_wx1):
+    #    data_wx1 = read_data_wx1(path_wx1)
     # elif os.path.exists(path_zfb1):
     #     data_zfb1 = read_data_zfb1(path_zfb1)        
     
@@ -135,3 +148,5 @@ if __name__ == '__main__':
 
     workbook.save(path_account)  # 保存
     print("\n成功将数据写入到 " + path_account)
+
+    os.startfile(path_account)
